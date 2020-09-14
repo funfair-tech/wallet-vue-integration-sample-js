@@ -7,7 +7,7 @@
           id="funwallet-iframe"
           is-fun-wallet="true"
           is-leader="true"
-          :onload="leaderLoaded()"
+          @load="leaderLoaded"
           frameborder="0"
         ></iframe>
       </div>
@@ -26,11 +26,8 @@ export default {
   },
   methods: {
     leaderLoaded() {
-      // fix this race condition
-      setTimeout(() => {
-        window.funwallet.sdk.init();
-        this.registerWalletEventsCallback();
-      }, 2000);
+      window.funwallet.sdk.init();
+      this.registerWalletEventsCallback();
     },
   },
 };

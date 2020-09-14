@@ -1,16 +1,48 @@
+import { MessageListeners } from '@funfair-tech/wallet-sdk';
 import Web3 from 'web3';
 import { isAuthenticated$, restoreAuthenticationTaskCompleted$ } from './store';
 
 export function registerEventListeners() {
-  window.funwallet.sdk.on('authenticationCompleted', (result) => {
+  window.funwallet.sdk.on(
+    MessageListeners.authenticationCompleted,
+    (result) => {
+      if (result.origin === 'https://wallet.funfair.io') {
+        isAuthenticated$.next(true);
+      }
+    }
+  );
+
+  window.funwallet.sdk.on(
+    MessageListeners.restoreAuthenticationCompleted,
+    (result) => {
+      if (result.origin === 'https://wallet.funfair.io') {
+        restoreAuthenticationTaskCompleted$.next(true);
+      }
+    }
+  );
+
+  window.funwallet.sdk.on(MessageListeners.isKycVerified, (result) => {
     if (result.origin === 'https://wallet.funfair.io') {
-      isAuthenticated$.next(true);
+      if (!result.data.isVerified) {
+        window.funwallet.sdk.showFunWalletModal();
+      } else {
+        // maybe show some kind of error message as in theory
+        // your client should not be showing ability to popup KYC
+        // when they are already verified
+        console.error(
+          'Your client should not show the kyc logic if already kyced'
+        );
+      }
     }
   });
 
-  window.funwallet.sdk.on('restoreAuthenticationCompleted', (result) => {
+  window.funwallet.sdk.on(MessageListeners.kycProcessCancelled, (result) => {
     if (result.origin === 'https://wallet.funfair.io') {
-      restoreAuthenticationTaskCompleted$.next(true);
+      if (result.data.cancelled) {
+        window.funwallet.sdk.hideFunWalletModal();
+        // you may want to move routes etc here hence why you hook onto this action
+        // and the sdk does not
+      }
     }
   });
 
@@ -63,5 +95,6 @@ export async function sendTransaction(tx) {
 }
 
 export async function openKycProcess() {
+  console.log('heyheyhey2');
   await window.funwallet.sdk.kycModalOpen();
 }

@@ -32,11 +32,11 @@ export default {
 
       console.log('Send signed transaction complete. sig -', signature);
     },
-    logout() {
-      logout();
-    },
     async openKycProcess() {
       await openKycProcess();
+    },
+    logout() {
+      logout();
     },
   },
 };

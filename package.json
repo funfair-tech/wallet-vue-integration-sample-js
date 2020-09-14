@@ -3,18 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "vue-cli-service serve --port 3001",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@funfair-tech/wallet-sdk": "^2.1.1",
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "rxjs": "^6.6.3",
+    "vue": "^2.6.11",
+    "web3": "^1.2.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-service": "~4.0.0",
+    "webpack-dev-server": "3.8.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",

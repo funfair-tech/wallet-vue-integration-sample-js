@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@funfair-tech/wallet-sdk": "^2.1.1",
+    "@funfair-tech/wallet-vue": "file:funfair-tech-wallet-vue-1.0.0.tgz",
     "core-js": "^3.6.5",
     "rxjs": "^6.6.3",
     "vue": "^2.6.11",

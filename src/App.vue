@@ -24,10 +24,9 @@
 </template>
 
 <script>
+import { WalletLeader, WalletFollower } from '@funfair-tech/wallet-vue';
 import { login, logout } from './services/wallet-service';
-import WalletLeader from './components/Wallet-Leader.vue';
 import { registerEventListeners } from './services/wallet-service';
-import WalletFollower from './components/Wallet-Follower.vue';
 import LoggedInActions from './components/Logged-In-Actions.vue';
 import LoggedOutActions from './components/Logged-Out-Actions.vue';
 import {

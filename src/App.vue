@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <WalletLeader
-      :registerWalletEventsCallback="this.registerWalletEventsCallback"
-    />
+    <WalletLeader :registerEventListeners="this.registerEventListeners" />
     <div class="App">
       <div class="App-container">
         <img class="App-logo" src="./assets/logo.svg" />
@@ -46,7 +44,7 @@ export default {
     return { isLoggedIn: false, loading: true };
   },
   methods: {
-    registerWalletEventsCallback: function() {
+    registerEventListeners: function() {
       registerEventListeners();
     },
     login: function() {

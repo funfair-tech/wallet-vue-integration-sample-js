@@ -113,6 +113,5 @@ export async function sendTransaction(tx) {
 }
 
 export async function openKycProcess() {
-  console.log('heyheyhey2');
   await window.funwallet.sdk.kycModalOpen();
 }

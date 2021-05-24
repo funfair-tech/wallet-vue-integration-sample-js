@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <WalletLeader :registerEventListeners="this.registerEventListeners" />
     <div class="App">
       <div class="App-container">
         <img class="App-logo" src="./assets/logo.svg" />
@@ -22,7 +21,7 @@
 </template>
 
 <script>
-import { WalletLeader, WalletFollower } from '@funfair-tech/wallet-vue';
+import { WalletFollower } from '@funfair-tech/wallet-vue';
 import { login, logout } from './services/wallet-service';
 import { registerEventListeners } from './services/wallet-service';
 import LoggedInActions from './components/Logged-In-Actions.vue';
@@ -31,11 +30,11 @@ import {
   isAuthenticated$,
   restoreAuthenticationTaskCompleted$,
 } from './services/store';
+import { FunWalletEmbed } from '@funfair-tech/wallet-sdk';
 
 export default {
   name: 'App',
   components: {
-    WalletLeader,
     LoggedInActions,
     LoggedOutActions,
     WalletFollower,
@@ -54,8 +53,27 @@ export default {
       logout();
     },
   },
-  created: function() {
+  created: async function() {
     const _this = this;
+
+    // you call this method when you want to load the wallet
+    // this can be on a button click or page load up to how
+    // your dApp needs it to act
+
+    // it returns the fun wallet sdk but this
+    // is always exposed in `window.funwallet.sdk`
+    await FunWalletEmbed.load({
+      appId:
+        '0x4bacd419787e5caec0058282067089891e88d48afd03741ddb452555eb7bcf3d',
+      // make sure its in a arrow expression
+      // functions so it can get context to `this`
+      // when executing your wallet event listener method
+      eventListenerCallback: () => {
+        this.registerEventListeners();
+      },
+      environment: 'LOCAL',
+    });
+
     isAuthenticated$.subscribe((value) => {
       _this.$data.isLoggedIn = value;
     });

@@ -4,19 +4,17 @@ import { isAuthenticated$, restoreAuthenticationTaskCompleted$ } from './store';
 
 export function registerEventListeners() {
   window.funwallet.sdk.on(
-    MessageListeners.authenticationCompleted,
-    (result) => {
-      if (result.origin === 'https://wallet.funfair.io') {
-        isAuthenticated$.next(true);
-      }
-    }
-  );
-
-  window.funwallet.sdk.on(
     MessageListeners.restoreAuthenticationCompleted,
     (result) => {
       if (result.origin === 'https://wallet.funfair.io') {
         restoreAuthenticationTaskCompleted$.next(true);
+
+        // if the user has been restored authentication then your all good
+        // to go again
+        if (result.data.isAuthenticated) {
+          // result.data.result holds `AuthenticationCompletedResponeData` in for you.
+          isAuthenticated$.next(true);
+        }
       }
     }
   );
@@ -68,8 +66,16 @@ export function registerEventListeners() {
   // register all the other events your interested in here...
 }
 
-export function login() {
-  window.funwallet.sdk.openWalletAuthenticationPopUp();
+export async function login() {
+  try {
+    const result = await window.funwallet.sdk.auth.login();
+    console.log('Authentication result', result);
+
+    isAuthenticated$.next(true);
+  } catch (error) {
+    console.error('User did not sign in');
+    return;
+  }
 }
 
 export function logout() {

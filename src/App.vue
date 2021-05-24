@@ -64,14 +64,13 @@ export default {
     // is always exposed in `window.funwallet.sdk`
     await FunWalletEmbed.load({
       appId:
-        '0x4bacd419787e5caec0058282067089891e88d48afd03741ddb452555eb7bcf3d',
+        '0x1b084986077d1aedfa1d92318fdcc7d1621fbc92deb390269b94226fd79c0ce6',
       // make sure its in a arrow expression
       // functions so it can get context to `this`
       // when executing your wallet event listener method
       eventListenerCallback: () => {
         this.registerEventListeners();
       },
-      environment: 'LOCAL',
     });
 
     isAuthenticated$.subscribe((value) => {

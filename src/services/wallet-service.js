@@ -78,7 +78,7 @@ export async function login() {
   }
 }
 
-export function logout() {
+export async function logout() {
   window.funwallet.sdk.auth.logout();
   isAuthenticated$.next(false);
 }

@@ -46,11 +46,11 @@ export default {
     registerEventListeners: function() {
       registerEventListeners();
     },
-    login: function() {
-      login();
+    login: async function() {
+      await login();
     },
-    logout: function() {
-      logout();
+    logout: async function() {
+      await logout();
     },
   },
   created: async function() {

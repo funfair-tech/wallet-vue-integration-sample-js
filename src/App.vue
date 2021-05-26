@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <WalletLeader :registerEventListeners="this.registerEventListeners" />
     <div class="App">
       <div class="App-container">
         <img class="App-logo" src="./assets/logo.svg" />
@@ -22,7 +21,7 @@
 </template>
 
 <script>
-import { WalletLeader, WalletFollower } from '@funfair-tech/wallet-vue';
+import { WalletFollower } from '@funfair-tech/wallet-vue';
 import { login, logout } from './services/wallet-service';
 import { registerEventListeners } from './services/wallet-service';
 import LoggedInActions from './components/Logged-In-Actions.vue';
@@ -31,11 +30,11 @@ import {
   isAuthenticated$,
   restoreAuthenticationTaskCompleted$,
 } from './services/store';
+import { FunWalletEmbed } from '@funfair-tech/wallet-sdk';
 
 export default {
   name: 'App',
   components: {
-    WalletLeader,
     LoggedInActions,
     LoggedOutActions,
     WalletFollower,
@@ -47,15 +46,33 @@ export default {
     registerEventListeners: function() {
       registerEventListeners();
     },
-    login: function() {
-      login();
+    login: async function() {
+      await login();
     },
-    logout: function() {
-      logout();
+    logout: async function() {
+      await logout();
     },
   },
-  created: function() {
+  created: async function() {
     const _this = this;
+
+    // you call this method when you want to load the wallet
+    // this can be on a button click or page load up to how
+    // your dApp needs it to act
+
+    // it returns the fun wallet sdk but this
+    // is always exposed in `window.funwallet.sdk`
+    await FunWalletEmbed.load({
+      appId:
+        '0x1b084986077d1aedfa1d92318fdcc7d1621fbc92deb390269b94226fd79c0ce6',
+      // make sure its in a arrow expression
+      // functions so it can get context to `this`
+      // when executing your wallet event listener method
+      eventListenerCallback: () => {
+        this.registerEventListeners();
+      },
+    });
+
     isAuthenticated$.subscribe((value) => {
       _this.$data.isLoggedIn = value;
     });

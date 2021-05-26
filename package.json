@@ -9,7 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@funfair-tech/wallet-sdk": "^3.0.3",
+    "@funfair-tech/wallet-sdk": "^3.4.0",
     "@funfair-tech/wallet-vue": "^1.1.0",
     "core-js": "^3.6.5",
     "rxjs": "^6.6.3",
